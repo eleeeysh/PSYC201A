@@ -1,0 +1,122 @@
+---
+title: "workflow_basic"
+output: html_document
+date: "2024-10-14"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+```
+
+## Tutorial
+
+### Basic syntax:
+
+```{r}
+x <- 5 # assignment
+v <- c(1, 2, 3) # vector
+v_2 <- v * 2 # vector operation
+```
+
+Use the variable defined in the code block: v has a value `r v`
+
+### Functions
+
+```{r}
+# sequence
+my_lst <- seq(from=1, to=10, by=2)
+my_str <- "I really do not like the <- thing"
+```
+
+### Visualization
+
+The super package tidyverse.
+
+```{r}
+# install.packages("tidyverse")
+library(tidyverse)
+```
+
+Import datasets (e.g.: penguins dataset)
+
+```{r}
+# install.packages("palmerpenguins")
+library(palmerpenguins)
+```
+
+Import color palette for plotting
+
+```{r}
+# install.packages("ggthemes")
+library(ggthemes)
+```
+
+#### dataframe
+```{r}
+penguins
+glimpse(penguins)
+```
+
+#### plotting
+
+```{r}
+ggplot(
+  data = penguins, # load the dataframe
+  mapping = aes(x = flipper_length_mm, y = body_mass_g) # x/y axis mapping to variables in dataframe species
+) +
+  geom_point(mapping=aes(color=species)) + # specify the type of plotting (line? scatter? bar chart?) + colors
+  geom_smooth(method = "lm")
+  
+```
+
+Note the correct level to define colors to not screw up the linear model fitting. The following get the colro right but the fitting not so ok.
+```{r}
+ggplot(
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)
+) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+The final plot
+```{r}
+ggplot(
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)
+) +
+  geom_point(aes(color = species, shape = species)) +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Body mass and flipper length",
+    subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+    x = "Flipper length (mm)", y = "Body mass (g)",
+    color = "Species", shape = "Species"
+  ) +
+  scale_color_colorblind()
+```
+
+## Exercise
+
+1. The variable defined is 'my_variable' while the one inspected is 'my_varıable', with 'i' replaced by 'ı'.
+
+2. 
+```{r}
+library(tidyverse)
+ggplot(
+  data = mpg,
+  mapping = aes(x = displ, y = hwy)
+) + geom_point() + geom_smooth(method = "lm")
+```
+3. Keyboard shortcut quick references. (Option + Shift + K)
+4. 
+```{r}
+my_bar_plot <- ggplot(mpg, aes(x = class)) +
+  geom_bar()
+my_scatter_plot <- ggplot(mpg, aes(x = cty, y = hwy)) +
+  geom_point()
+ggsave(filename = "mpg-plot.png", plot = my_bar_plot)
+```
+The bar chart is saved. Since the bar chart is assigned to 'my_bar_plot'.
+
